@@ -2,7 +2,12 @@
 
 Projeto Full Stack (Java + React) desenvolvido como ferramenta de gestão ambiental para prefeituras e ONGs. A aplicação permite consultar, cadastrar e analisar dados reais do SNIS (Sistema Nacional de Informações sobre Saneamento) sobre a geração de resíduos e taxas de reciclagem por município.
 
-Projeto desenvolvido para o curso de Análise e Desenvolvimento de Sistemas da **Fatec Ipiranga**, sob orientação da **Profa. Mestre Sirley Ambrosia Vitorio Addão**.
+Projeto desenvolvido para a disciplina de Programação Avançada Orientada a Objetos do curso de Análise e Desenvolvimento de Sistemas da Fatec Ipiranga, sob orientação da Profa. Mestre Sirley Ambrosia Vitorio Addão.
+
+Membros do Grupo
+Heloisa bertoli
+Ariel pereira
+Caio eduardo
 
 ---
 
