@@ -5,9 +5,14 @@ function App() {
   const [residuos, setResiduos] = useState([]);
   const [filtroEstado, setFiltroEstado] = useState('');
   
+  // Estado para controlar os campos do formulário
   const [form, setForm] = useState({
     municipio: '', estado: '', quantidadeGerada: '', taxaReciclagem: '', ano: ''
   });
+
+  // --- NOVOS ESTADOS PARA CONTROLE DE EDIÇÃO ---
+  const [editando, setEditando] = useState(false); // Diz se estamos criando (false) ou editando (true)
+  const [idEmEdicao, setIdEmEdicao] = useState(null); // Guarda o ID que está sendo editado
 
   const carregarDados = () => {
     api.get('')
@@ -33,9 +38,30 @@ function App() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // --- LÓGICA DE CANCELAR EDIÇÃO ---
+  const handleCancelarEdicao = () => {
+    setEditando(false);
+    setIdEmEdicao(null);
+    // Limpa o formulário
+    setForm({ municipio: '', estado: '', quantidadeGerada: '', taxaReciclagem: '', ano: '' });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault(); 
-    
+
+    if (editando) {
+
+      // Atualização (PUT)
+      api.put(`/${idEmEdicao}`, form)
+        .then(() => {
+          alert("✏️ Registro atualizado com sucesso!");
+          carregarDados(); 
+          handleCancelarEdicao(); 
+        })
+        .catch(error => console.error("Erro ao atualizar:", error));
+
+    } else {
+      // INSERÇÃO (POST)
     api.post('', form)
       .then(() => {
         alert("✅ Registro cadastrado com sucesso!");
@@ -43,6 +69,37 @@ function App() {
         setForm({ municipio: '', estado: '', quantidadeGerada: '', taxaReciclagem: '', ano: '' });
       })
       .catch(error => console.error("Erro ao salvar:", error));
+    }
+  };
+
+  //PREPARA PARA EDIÇÃO
+  const handlePrepararEdicao = (registro) => {
+    
+    setEditando(true);
+    
+    setIdEmEdicao(registro.id);
+    
+    setForm({
+      municipio: registro.municipio,
+      estado: registro.estado,
+      quantidadeGerada: registro.quantidadeGerada,
+      taxaReciclagem: registro.taxaReciclagem,
+      ano: registro.ano
+    });
+    // UX:Rola a página para cima
+    window.scrollTo(0, 0);
+  };
+
+  //EXCLUSÃO (DELETE)
+  const handleExcluir = (id) => {
+    if (window.confirm("Tem certeza que deseja excluir este registro?")) {
+      api.delete(`/${id}`)
+        .then(() => {
+          alert("🗑️ Registro excluído com sucesso!");
+          carregarDados(); // Atualiza a tabela 
+        })
+        .catch(error => console.error("Erro ao excluir:", error));
+    }
   };
 
 
@@ -100,6 +157,7 @@ function App() {
                   <th>Toneladas de lixo Gerado</th>
                   <th>Taxa Reciclagem</th>
                   <th>Nível de Sustentabilidade</th>
+                  <th>Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -129,6 +187,24 @@ function App() {
                           {nivel.texto}
                         </span>
                       </td>
+                      <td>
+                          <div style={{ display: 'flex', gap: '5px' }}>
+                              
+                              <button 
+                                onClick={() => handlePrepararEdicao(registro)} 
+                                style={{ backgroundColor: '#20b2aa', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                              >
+                                Atualizar
+                              </button>
+                              
+                              <button 
+                                onClick={() => handleExcluir(registro.id)} 
+                                style={{ backgroundColor: '#e74c3c', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                              >
+                                Excluir
+                              </button>
+                          </div>
+                        </td>
                     </tr>
                   );
                 })}
