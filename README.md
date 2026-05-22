@@ -4,7 +4,7 @@ Projeto Full Stack (Java + React) desenvolvido como ferramenta de gestão ambien
 
 Projeto desenvolvido para a disciplina de Programação Avançada Orientada a Objetos do curso de Análise e Desenvolvimento de Sistemas da Fatec Ipiranga, sob orientação da Profa. Mestre Sirley Ambrosia Vitorio Addão.
 
-Membros do Grupo
+**Membros do Grupo:**
 *Heloisa bertoli
 *Ariel pereira
 *Caio eduardo
